@@ -8,6 +8,7 @@ import java.util.Map;
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
 import com.tangosol.io.pof.PortableObject;
+import com.tangosol.util.Base;
 import com.tangosol.util.HashHelper;
 
 public class Contact implements PortableObject {
@@ -17,75 +18,75 @@ public class Contact implements PortableObject {
 	 * years. Suitable for example use only.
 	 */
 	public static final long MILLIS_IN_YEAR = 1000L * 60L * 60L * 24L * 365L;
-	private String FirstName;
-	private String LastName;
-	private Address HomeAddress;
-	private Address WorkAddress;
-	private Map TelephoneNumbers;
-	private java.sql.Date BirthDate;
+	private String firstName;
+	private String lastName;
+	private Address homeAddress;
+	private Address workAddress;
+	private Map telephoneNumbers;
+	private java.sql.Date birthDate;
+
+	public Contact(String firstName, String lastName, Address homeAddress, Address workAddress, Map telephoneNumbers,
+			Date birthDate) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.homeAddress = homeAddress;
+		this.workAddress = workAddress;
+		this.telephoneNumbers = telephoneNumbers;
+		this.birthDate = birthDate;
+	}
 
 	public Contact() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Contact(String firstName, String lastName, Address homeAddress, Address workAddress, Map telephoneNumbers,
-			Date birthDate) {
-		super();
-		FirstName = firstName;
-		LastName = lastName;
-		HomeAddress = homeAddress;
-		WorkAddress = workAddress;
-		TelephoneNumbers = telephoneNumbers;
-		BirthDate = birthDate;
-	}
-
 	public String getFirstName() {
-		return FirstName;
+		return firstName;
 	}
 
 	public void setFirstName(String firstName) {
-		FirstName = firstName;
+		this.firstName = firstName;
 	}
 
 	public String getLastName() {
-		return LastName;
+		return lastName;
 	}
 
 	public void setLastName(String lastName) {
-		LastName = lastName;
+		this.lastName = lastName;
 	}
 
 	public Address getHomeAddress() {
-		return HomeAddress;
+		return homeAddress;
 	}
 
 	public void setHomeAddress(Address homeAddress) {
-		HomeAddress = homeAddress;
+		this.homeAddress = homeAddress;
 	}
 
 	public Address getWorkAddress() {
-		return WorkAddress;
+		return workAddress;
 	}
 
 	public void setWorkAddress(Address workAddress) {
-		WorkAddress = workAddress;
+		this.workAddress = workAddress;
 	}
 
 	public Map getTelephoneNumbers() {
-		return TelephoneNumbers;
+		return telephoneNumbers;
 	}
 
 	public void setTelephoneNumbers(Map telephoneNumbers) {
-		TelephoneNumbers = telephoneNumbers;
+		this.telephoneNumbers = telephoneNumbers;
 	}
 
 	public java.sql.Date getBirthDate() {
-		return BirthDate;
+		return birthDate;
 	}
 
 	public void setBirthDate(java.sql.Date birthDate) {
-		BirthDate = birthDate;
+		this.birthDate = birthDate;
 	}
 
 	@Override
@@ -111,29 +112,36 @@ public class Contact implements PortableObject {
 
 	@Override
 	public String toString() {
-		 StringBuffer sb = new StringBuffer(getFirstName()).append(" ")                
-				 .append(getLastName())                
-				 .append("\nAddresses")                
-				 .append("\nHome: ")
-				 .append(getHomeAddress())                
-				 .append("\nWork: ")
-				 .append(getWorkAddress())                
-				 .append("\nTelephone Numbers"); 
-	        for (Iterator iter = TelephoneNumbers.entrySet().iterator();             
-	        		iter.hasNext(); ){            
-	        	Map.Entry entry = (Map.Entry) iter.next();            
-	        	sb.append("\n").append(entry.getKey())
-	        	.append(": ").append(entry.getValue());            
-	        	}        
-	        return sb.append("\nBirth Date: ").append(getBirthDate()).toString(); 
-	        }
-
+		StringBuffer sb = new StringBuffer(getFirstName()).append(" ").append(getLastName()).append("\nAddresses")
+				.append("\nHome: ").append(getHomeAddress()).append("\nWork: ").append(getWorkAddress())
+				.append("\nTelephone Numbers");
+		for (Iterator iter = telephoneNumbers.entrySet().iterator(); iter.hasNext();) {
+			Map.Entry entry = (Map.Entry) iter.next();
+			sb.append("\n").append(entry.getKey()).append(": ").append(entry.getValue());
+		}
+		return sb.append("\nBirth Date: ").append(getBirthDate()).toString();
+	}
 
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return super.equals(obj);
+		if (this == obj) {
+			return true;
+		}
+		if (this == null) {
+			return false;
+		}
+		Contact that = (Contact) obj;
+		return Base.equals(getFirstName(), that.getFirstName()) && Base.equals(getLastName(), that.getLastName())
+				&& Base.equals(getTelephoneNumbers(), that.getTelephoneNumbers());
 	}
-	
-	
+
+	public int hashCode() {
+		return HashHelper.hash(getFirstName(),
+				HashHelper.hash(getLastName(), HashHelper.hash(getTelephoneNumbers(), 0)));
 	}
+
+	public int getAge() {
+		return (int) ((System.currentTimeMillis() - birthDate.getTime()) / MILLIS_IN_YEAR);
+	}
+
+}
