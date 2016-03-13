@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coherence xmlns="http://xmlns.oracle.com/coherence/coherence-operational-config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.oracle.com/coherence/coherence-operational-config http://xmlns.oracle.com/coherence/coherence-operational-config/1.2/coherence-operational-config.xsd">
+    <!--coherence-version:12.1.2-->
+    <security-config>
+    	<identity-asserter>
+    		<class-name>com.codepandablog.coherence.PasswordIdentityAsserter</class-name>
+    	</identity-asserter>
+    	
+    	<identity-transformer>
+    		<class-name>com.codepandablog.coherence.PasswordIdentityTransformer</class-name>
+    	</identity-transformer>
+
+    	<subject-scope>true</subject-scope>
+    </security-config>
+</coherence>
